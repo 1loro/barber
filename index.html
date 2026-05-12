@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Teixido Studio — Barber Home</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #0a0a0a;
+      --white: #f5f3ef;
+      --gold: #b8965a;
+      --gold-light: #d4b07a;
+      --gray: #7a7672;
+      --border: rgba(184,150,90,0.25);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.5;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 24px;
+      position: relative;
+      gap: 48px;
+    }
+
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 1px; height: 80px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      opacity: 0.6;
+    }
+
+    .logo-wrap { animation: fadeUp 1s ease both; }
+
+    .logo-svg {
+      width: 160px; height: 160px;
+      filter: drop-shadow(0 0 30px rgba(184,150,90,0.15));
+    }
+
+    .headline { text-align: center; animation: fadeUp 1s 0.2s ease both; }
+
+    .headline h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 8vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: var(--white);
+      margin-bottom: 16px;
+    }
+
+    .headline h1 em { font-style: italic; color: var(--gold-light); }
+
+    .headline p {
+      font-size: 0.85rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gray);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--border);
+      padding: 10px 22px;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      animation: fadeUp 1s 0.35s ease both;
+    }
+
+    .badge span {
+      width: 6px; height: 6px;
+      background: var(--gold);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    /* ── ABOUT ── */
+    .about {
+      padding: 120px 24px;
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .label {
+      font-size: 0.72rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      display: block;
+    }
+
+    .about h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 28px;
+    }
+
+    .about p {
+      font-size: 0.9rem;
+      line-height: 1.9;
+      color: var(--gray);
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      max-width: 200px;
+      margin: 48px auto;
+      opacity: 0.4;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px;
+      background: var(--gold);
+    }
+    .divider svg { flex-shrink: 0; }
+
+    /* ── SERVICES ── */
+    .services {
+      padding: 0 24px 120px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    /* Cards con altura fija usando flex para empujar el badge al fondo */
+    .service-card {
+      background: #111;
+      padding: 40px 32px;
+      border: 1px solid #1c1c1c;
+      transition: border-color 0.3s, background 0.3s;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      transform: scaleX(0);
+      transition: transform 0.4s;
+    }
+
+    .service-card:hover { border-color: var(--border); background: #141414; }
+    .service-card:hover::before { transform: scaleX(1); }
+
+    .service-card .icon {
+      font-size: 1.4rem;
+      color: var(--gold);
+      margin-bottom: 20px;
+      display: block;
+      width: 40px; height: 40px;
+      display: flex;
+      align-items: center;
+    }
+
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+
+    .service-card p {
+      font-size: 0.8rem;
+      color: var(--gray);
+      line-height: 1.7;
+      flex: 1; /* empuja el badge hacia abajo */
+    }
+
+    .service-card .price {
+      display: inline-block;
+      margin-top: 24px;
+      align-self: flex-start;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--border);
+      padding: 5px 14px;
+      border-radius: 100px;
+    }
+
+    /* ── CONTACTO ── */
+    .contact {
+      padding: 100px 24px;
+      max-width: 520px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .contact h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 300;
+      margin-bottom: 52px;
+    }
+
+    .contact-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .contact-link {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      text-decoration: none;
+      color: var(--white);
+      font-size: 0.88rem;
+      padding: 18px 28px;
+      border: 1px solid #1e1e1e;
+      width: 100%;
+      transition: border-color 0.3s, color 0.3s;
+    }
+
+    .contact-link:hover { border-color: var(--gold); color: var(--gold-light); }
+    .contact-link:hover .cl-icon { color: var(--gold-light); }
+
+    .contact-link .cl-icon {
+      font-size: 1.1rem;
+      color: var(--gold);
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+      transition: color 0.3s;
+    }
+
+    .contact-link .cl-text { text-align: left; }
+
+    .contact-link .cl-label {
+      font-size: 0.64rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--gray);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .contact-link .cl-value {
+      font-size: 0.88rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid #1a1a1a;
+      padding: 40px 24px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: #333;
+      letter-spacing: 0.1em;
+    }
+
+    footer strong { color: var(--gold); }
+
+    /* ── SCROLL REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    @media (max-width: 640px) {
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="logo-wrap">
+      <svg class="logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="100" r="96" fill="#0a0a0a" stroke="#b8965a" stroke-width="1.5"/>
+        <circle cx="100" cy="100" r="88" fill="none" stroke="#b8965a" stroke-width="0.6" opacity="0.4"/>
+        <text x="100" y="107" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="700" font-size="22" fill="white" letter-spacing="4">TEIXIDO</text>
+        <line x1="48" y1="120" x2="152" y2="120" stroke="#b8965a" stroke-width="0.8" opacity="0.6"/>
+        <text x="100" y="137" text-anchor="middle" font-family="Montserrat, sans-serif" font-weight="300" font-size="9" fill="#b8965a" letter-spacing="7">STUDIO</text>
+      </svg>
+    </div>
+
+    <div class="headline">
+      <h1>Ven a cortarte<br><em>conmigo</em></h1>
+      <p>Barber Home · El Bosque · Santiago</p>
+    </div>
+
+    <div class="badge">
+      <span></span>
+      Buscando modelos — Precio: Free
+    </div>
+  </section>
+
+  <!-- ── ABOUT ── -->
+  <section class="about reveal">
+    <span class="label">Quién soy</span>
+    <h2>Barbero en formación,<br>comprometido con el detalle</h2>
+    <div class="divider">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M8 1 L9.5 6.5 L15 8 L9.5 9.5 L8 15 L6.5 9.5 L1 8 L6.5 6.5 Z" fill="#b8965a" opacity="0.7"/>
+      </svg>
+    </div>
+    <p>Estoy comenzando mi camino como barbero profesional y busco personas que quieran ser parte de esta etapa. Cada corte es una oportunidad para mejorar mi técnica — y para ti, una experiencia gratuita en un ambiente privado y cómodo.</p>
+  </section>
+
+  <!-- ── SERVICIOS ── -->
+  <section class="services reveal">
+    <div style="text-align:center; margin-bottom: 56px;">
+      <span class="label">Servicios</span>
+      <h2 style="font-family: 'Cormorant Garamond', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 300;">Lo que ofrezco</h2>
+    </div>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="icon"><i class="fa-solid fa-scissors"></i></span>
+        <h3>Corte de cabello</h3>
+        <p>Fade, clásico, texturizado. Adaptado a tu estilo y tipo de cabello.</p>
+        <span class="price">Gratis</span>
+      </div>
+      <div class="service-card">
+        <span class="icon"><i class="fa-solid fa-razor"></i></span>
+        <h3>Perfilado de barba</h3>
+        <p>Definición de líneas, arreglo y perfilado para un acabado limpio.</p>
+        <span class="price">Gratis</span>
+      </div>
+      <div class="service-card">
+        <span class="icon"><i class="fa-solid fa-spa"></i></span>
+        <h3>Experiencia completa</h3>
+        <p>Ambiente privado, música, atención personalizada. Un espacio solo para ti.</p>
+        <span class="price">Sin costo</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACTO ── -->
+  <section class="contact reveal">
+    <span class="label">Contacto</span>
+    <h2>Escríbeme directamente</h2>
+
+    <div class="contact-links">
+      <a class="contact-link" href="https://wa.me/56998079426" target="_blank">
+        <span class="cl-icon"><i class="fa-brands fa-whatsapp"></i></span>
+        <div class="cl-text">
+          <span class="cl-label">WhatsApp</span>
+          <span class="cl-value">+56 9 98079426</span>
+        </div>
+      </a>
+      <a class="contact-link" href="https://instagram.com/teixido.studio" target="_blank">
+        <span class="cl-icon"><i class="fa-brands fa-instagram"></i></span>
+        <div class="cl-text">
+          <span class="cl-label">Instagram</span>
+          <span class="cl-value">@teixido.studio</span>
+        </div>
+      </a>
+      <div class="contact-link" style="cursor:default;">
+        <span class="cl-icon"><i class="fa-solid fa-location-dot"></i></span>
+        <div class="cl-text">
+          <span class="cl-label">Ubicación</span>
+          <span class="cl-value">El Bosque, Santiago · Barber Home</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <strong>TEIXIDO STUDIO</strong> — Barber Home · El Bosque · Santiago<br>
+    <span style="font-size:0.65rem; margin-top: 8px; display:block; color: #222;">© 2026 · Todos los derechos reservados</span>
+  </footer>
+
+  <script>
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
