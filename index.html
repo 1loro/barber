@@ -4,21 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Teixido Studio — Barber Home</title>
+  <meta name="description" content="Barbero en formación busca modelos. Cortes gratis en ambiente privado. El Bosque, Santiago.">
+  <meta name="theme-color" content="#0a0a0a">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%230a0a0a'/%3E%3Cg fill='none' stroke='%23b8965a' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='7' cy='6' r='2.4'/%3E%3Ccircle cx='7' cy='18' r='2.4'/%3E%3Cpath d='M9 7.5L19 17M9 16.5L19 7'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
   <!-- Open Graph / Vista previa al compartir -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="Teixido Studio — Barber Home">
   <meta property="og:description" content="Barbero en formación busca modelos. Cortes gratis en ambiente privado. El Bosque, Santiago.">
-  <meta property="og:image" content="https://1loro.github.io/barber/og-image.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Teixido Studio — Barber Home">
   <meta name="twitter:description" content="Barbero en formación busca modelos. Cortes gratis en ambiente privado. El Bosque, Santiago.">
-  <meta name="twitter:image" content="https://1loro.github.io/barber/og-image.png">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,7 +26,7 @@
       --white: #f5f3ef;
       --gold: #b8965a;
       --gold-light: #d4b07a;
-      --gray: #7a7672;
+      --gray: #8b857e;
       --border: rgba(184,150,90,0.25);
     }
 
@@ -186,12 +185,18 @@
       background: #111;
       padding: 40px 32px;
       border: 1px solid #1c1c1c;
-      transition: border-color 0.3s, background 0.3s;
+      transition: border-color 0.3s, background 0.3s, opacity 0.6s ease, transform 0.6s ease;
       position: relative;
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      opacity: 0;
+      transform: translateY(24px);
     }
+    .services.visible .service-card { opacity: 1; transform: none; }
+    .services.visible .service-card:nth-child(1) { transition-delay: .05s; }
+    .services.visible .service-card:nth-child(2) { transition-delay: .15s; }
+    .services.visible .service-card:nth-child(3) { transition-delay: .25s; }
 
     .service-card::before {
       content: '';
@@ -207,14 +212,13 @@
     .service-card:hover::before { transform: scaleX(1); }
 
     .service-card .icon {
-      font-size: 1.4rem;
       color: var(--gold);
       margin-bottom: 20px;
-      display: block;
       width: 40px; height: 40px;
       display: flex;
       align-items: center;
     }
+    .service-card .icon svg { width: 24px; height: 24px; }
 
     .service-card h3 {
       font-family: 'Cormorant Garamond', serif;
@@ -275,20 +279,30 @@
       padding: 18px 28px;
       border: 1px solid #1e1e1e;
       width: 100%;
-      transition: border-color 0.3s, color 0.3s;
+      transition: border-color 0.3s, color 0.3s, opacity 0.5s ease, transform 0.5s ease;
+      opacity: 0;
+      transform: translateY(16px);
     }
 
-    .contact-link:hover { border-color: var(--gold); color: var(--gold-light); }
-    .contact-link:hover .cl-icon { color: var(--gold-light); }
+    .contact.visible .contact-link { opacity: 1; transform: none; }
+    .contact.visible .contact-link:nth-child(1) { transition-delay: .05s; }
+    .contact.visible .contact-link:nth-child(2) { transition-delay: .15s; }
+    .contact.visible .contact-link:nth-child(3) { transition-delay: .25s; }
+
+    .contact-link:hover, .contact-link:focus-visible { border-color: var(--gold); color: var(--gold-light); }
+    .contact-link:hover .cl-icon, .contact-link:focus-visible .cl-icon { color: var(--gold-light); }
+    .contact-link:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }
 
     .contact-link .cl-icon {
-      font-size: 1.1rem;
       color: var(--gold);
       width: 20px;
-      text-align: center;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       transition: color 0.3s;
     }
+    .contact-link .cl-icon svg { width: 19px; height: 19px; }
 
     .contact-link .cl-text { text-align: left; }
 
@@ -339,10 +353,20 @@
     @media (max-width: 640px) {
       .services-grid { grid-template-columns: 1fr; }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+      .reveal, .service-card, .contact-link { transform: none !important; }
+    }
   </style>
 </head>
 <body>
 
+  <main>
   <!-- ── HERO ── -->
   <section class="hero">
     <div class="logo-wrap">
@@ -387,19 +411,25 @@
 
     <div class="services-grid">
       <div class="service-card">
-        <span class="icon"><i class="fa-solid fa-scissors"></i></span>
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M8.5 8.5L21 21M8.5 15.5L21 3"/></svg>
+        </span>
         <h3>Corte de cabello</h3>
         <p>Fade, clásico, texturizado. Adaptado a tu estilo y tipo de cabello.</p>
         <span class="price">$3.000</span>
       </div>
       <div class="service-card">
-        <span class="icon"><i class="fa-solid fa-razor"></i></span>
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19L16.5 7.5"/><path d="M16.5 7.5L20 4"/><circle cx="5" cy="19" r="2.1"/></svg>
+        </span>
         <h3>Perfilado de barba</h3>
         <p>Definición de líneas, arreglo y perfilado para un acabado limpio.</p>
         <span class="price">Gratis</span>
       </div>
       <div class="service-card">
-        <span class="icon"><i class="fa-solid fa-spa"></i></span>
+        <span class="icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l1.9 5.6L19.5 10.5l-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9z"/></svg>
+        </span>
         <h3>Experiencia completa</h3>
         <p>Ambiente privado, música, atención personalizada. Un espacio solo para ti.</p>
         <span class="price">Sin costo</span>
@@ -414,21 +444,27 @@
 
     <div class="contact-links">
       <a class="contact-link" href="https://wa.me/56998079426" target="_blank">
-        <span class="cl-icon"><i class="fa-brands fa-whatsapp"></i></span>
+        <span class="cl-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-3.6-6.7"/><path d="M20 4l-8.4 8.5-3-3"/></svg>
+        </span>
         <div class="cl-text">
           <span class="cl-label">WhatsApp</span>
           <span class="cl-value">+56 9 98079426</span>
         </div>
       </a>
       <a class="contact-link" href="https://instagram.com/teixido.studio" target="_blank">
-        <span class="cl-icon"><i class="fa-brands fa-instagram"></i></span>
+        <span class="cl-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1"/></svg>
+        </span>
         <div class="cl-text">
           <span class="cl-label">Instagram</span>
           <span class="cl-value">@teixido.studio</span>
         </div>
       </a>
       <div class="contact-link" style="cursor:default;">
-        <span class="cl-icon"><i class="fa-solid fa-location-dot"></i></span>
+        <span class="cl-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </span>
         <div class="cl-text">
           <span class="cl-label">Ubicación</span>
           <span class="cl-value">El Bosque, Santiago · Barber Home</span>
@@ -436,6 +472,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <!-- ── FOOTER ── -->
   <footer>
